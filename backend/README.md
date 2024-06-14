@@ -7,7 +7,6 @@ npm install
 npm install -g nodemon
 npm start
 ```
-> Copy isi file `.env.example`Lalu buat dan paste isi nya ke dalam file `.env` 
 
 ## Routes
 
@@ -29,3 +28,6 @@ npm start
 | UPDATE CARTS | localhost:5000/cart/update | PUT | USER/ADMIN/SUPERADMIN |
 | DELETE CARTS | `ON PROGGRESS` | DELETE | USER/ADMIN/SUPERADMIN |
 | CHECKOUT | `ON PROGGRESS` | POST | USER/ADMIN/SUPERADMIN |
+
+## Data Dummy
+Untuk data dummy atau contoh silahkan export data collection yang ada pada file dbExport ke collection MongoDB kamu
