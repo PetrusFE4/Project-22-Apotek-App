@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Carousel, Container, Row, Col, Card, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../../Components/User/Header";
@@ -15,33 +15,37 @@ import diagnosis06 from "../../assets/img/diagnosis06.png";
 import "../../assets/css/Home.css";
 
 const Home = () => {
+  const navigate = useNavigate();
   const crispScriptRef = useRef(null);
 
   useEffect(() => {
     window.$crisp = [];
-    window.CRISP_WEBSITE_ID = "f600f12a-1169-4a87-a8e8-801e93fcc920";
+    window.CRISP_WEBSITE_ID = "0efccc7d-d3ae-4a9c-94f7-3f59742ed30e";
     crispScriptRef.current = document.createElement("script");
     crispScriptRef.current.src = "https://client.crisp.chat/l.js";
     crispScriptRef.current.async = 1;
-    document.getElementsByTagName("head")[0].appendChild(crispScriptRef.current);
+    document
+      .getElementsByTagName("head")[0]
+      .appendChild(crispScriptRef.current);
 
     return () => {
       if (crispScriptRef.current) {
-        document.getElementsByTagName("head")[0].removeChild(crispScriptRef.current);
+        document
+          .getElementsByTagName("head")[0]
+          .removeChild(crispScriptRef.current);
         delete window.$crisp;
         delete window.CRISP_WEBSITE_ID;
       }
     };
   }, []);
-  const navigate = useNavigate();
 
   const categories = [
-    { name: "Obat", icon: "💊", path: "/vitamin" },
-    { name: "Suplemen", icon: "🧴", path: "/vitamin" },
-    { name: "Nutrisi", icon: "⚡", path: "/vitamin" },
-    { name: "Herbal", icon: "🌿", path: "/vitamin" },
-    { name: "Produk Bayi", icon: "🍼", path: "/vitamin" },
-    { name: "Alat Kesehatan", icon: "🚑", path: "/vitamin" },
+    { name: "Vitamin C", icon: "💊", path: "/products/vitamin-c" },
+    { name: "Suplemen Daya Tahan", icon: "💉", path: "/products/suplemen" },
+    { name: "Obat batuk", icon: "🦠", path: "/products/obat-batuk" },
+    { name: "Obat Demam", icon: "🌡", path: "/products/obat-demam" },
+    { name: "Vitamin Anak", icon: "🩸", path: "/products/vitamin-anak" },
+    { name: "Obat Kulit", icon: "🩹", path: "/products/obat-kulit" },
   ];
 
   const diagnosis = [
@@ -83,50 +87,64 @@ const Home = () => {
         "https://d2qjkwm11akmwu.cloudfront.net/products/862528_2-4-2019_10-31-18-1665793368.webp",
       title: "DegiroI 0,25 mg 10 Tablet",
       description: "/Strip",
-      price: "Rp16.297",
+      price: 16297,
       freeShipping: true,
+      path: "/products/detail-product",
     },
     {
       image:
-        "https://d2qjkwm11akmwu.cloudfront.net/products/862528_2-4-2019_10-31-18-1665793368.webp",
-      title: "DegiroI 0,35 mg 10 Tablet",
+        "https://res-1.cloudinary.com/dk0z4ums3/image/upload/c_scale,h_500,w_500/v1/production/pharmacy/products/1659931609_5fb3880f41ab59059e86a0ff",
+      title: "Becom Zet 10 Kaplet",
       description: "/Strip",
-      price: "Rp16.297",
+      price: 34032,
       freeShipping: true,
+      path: "/products/detail-product",
     },
     {
       image:
-        "https://d2qjkwm11akmwu.cloudfront.net/products/862528_2-4-2019_10-31-18-1665793368.webp",
-      title: "DegiroI 0,45 mg 10 Tablet",
-      description: "/Strip",
-      price: "Rp16.297",
+        "https://res-2.cloudinary.com/dk0z4ums3/image/upload/c_scale,h_500,w_500/v1/production/pharmacy/products/1659933112_5fb3899241ab59059e86a4d1",
+      title: "Tempra Drop 15 ml",
+      description: "/Botol",
+      price: 64196,
       freeShipping: true,
+      path: "/products/detail-product",
     },
     {
       image:
-        "https://d2qjkwm11akmwu.cloudfront.net/products/862528_2-4-2019_10-31-18-1665793368.webp",
-      title: "DegiroI 0,55 mg 10 Tablet",
-      description: "/Strip",
-      price: "Rp16.297",
+        "https://res-5.cloudinary.com/dk0z4ums3/image/upload/c_scale,h_500,w_500/v1/production/pharmacy/products/1659930406_5fb37b0841ab59059e8681ba",
+      title: "Silex Sirup 100 ml",
+      description: "/Botol",
+      price: 101853,
       freeShipping: true,
+      path: "/products/detail-product",
     },
     {
       image:
-        "https://d2qjkwm11akmwu.cloudfront.net/products/862528_2-4-2019_10-31-18-1665793368.webp",
-      title: "DegiroI 0,65 mg 10 Tablet",
-      description: "/Strip",
-      price: "Rp16.297",
+        "https://res-3.cloudinary.com/dk0z4ums3/image/upload/c_scale,h_500,w_500/v1/production/pharmacy/products/1701133331_untitled_design",
+      title: "Shampo Sebamed",
+      description: "/Botol",
+      price: 236170,
       freeShipping: true,
+      path: "/products/detail-product",
     },
     {
       image:
-        "https://d2qjkwm11akmwu.cloudfront.net/products/862528_2-4-2019_10-31-18-1665793368.webp",
-      title: "DegiroI 0,75 mg 10 Tablet",
-      description: "/Strip",
-      price: "Rp16.297",
+        "https://res-5.cloudinary.com/dk0z4ums3/image/upload/c_scale,h_500,w_500/v1/production/pharmacy/products/1659930651_5fb37f7041ab59059e868c57",
+      title: "Lacto B Sachet 1 gr",
+      description: "/Sachet",
+      price: 16297,
       freeShipping: true,
+      path: "/products/detail-product",
     },
   ];
+
+  const formatRupiah = (number) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    }).format(number);
+  };
 
   const handleProductClick = (product) => {
     navigate("/products/detail-product", { state: { product } });
@@ -169,17 +187,6 @@ const Home = () => {
             <Row className="align-items-center justify-content-between">
               <Col>
                 <h5>Kategori</h5>
-              </Col>
-              <Col xs="auto">
-                <Button
-                  variant="link"
-                  className="see-all-button"
-                  Link
-                  as={Link}
-                  to="/category"
-                >
-                  See All
-                </Button>
               </Col>
             </Row>
             <Row className="g-3 justify-content-center">
@@ -273,6 +280,17 @@ const Home = () => {
               <Col>
                 <h5>Produk Populer</h5>
               </Col>
+              <Col xs="auto">
+                <Button
+                  variant="link"
+                  className="see-all-button"
+                  Link
+                  as={Link}
+                  to="/products"
+                >
+                  See All
+                </Button>
+              </Col>
             </Row>
 
             <Row className="g-3 justify-content-center">
@@ -304,7 +322,7 @@ const Home = () => {
                         {item.description}
                       </Card.Text>
                       <Card.Text className="product-price">
-                        {item.price}
+                        {formatRupiah(item.price)}
                       </Card.Text>
                     </Card.Body>
                   </Card>
