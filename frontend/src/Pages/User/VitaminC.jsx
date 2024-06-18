@@ -17,13 +17,13 @@ const Category = () => {
   const [totalQuantityPopuler, setTotalQuantityPopuler] = useState(0);
   const [totalPricePopuler, setTotalPricePopuler] = useState(0);
 
-  const [quantitiesVitaminC, setQuantitiesVitaminC] = useState(
+  const [setQuantitiesVitaminC] = useState(
     initialQuantitiesVitaminC
   );
   const [totalQuantityVitaminC, setTotalQuantityVitaminC] = useState(0);
   const [totalPriceVitaminC, setTotalPriceVitaminC] = useState(0);
 
-  const [quantitiesObatBatuk, setQuantitiesObatBatuk] = useState(
+  const [setQuantitiesObatBatuk] = useState(
     initialQuantitiesObatBatuk
   );
   const [totalQuantityObatBatuk, setTotalQuantityObatBatuk] = useState(0);
