@@ -7,13 +7,13 @@ import {
   ButtonGroup,
   Offcanvas,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../assets/css/Header.css";
 
 const HeaderDashboard = () => {
+  const navigate = useNavigate();
   /*
   const [userRole, setUserRole] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Mengambil peran pengguna dari localStorage
@@ -32,8 +32,6 @@ const HeaderDashboard = () => {
     console.log("Logout successful!");
     navigate("/");
   };
-  
-  
 
   return (
     <Navbar expand="l" className="mb-3 navbar-container" sticky="top">
@@ -76,7 +74,6 @@ const HeaderDashboard = () => {
               <Nav.Link as={Link} to="/dashboard/add-admin">
                 Add Admin
               </Nav.Link>
-
               <Nav.Link as={Link} to="/dashboard/settings">
                 Settings
               </Nav.Link>
