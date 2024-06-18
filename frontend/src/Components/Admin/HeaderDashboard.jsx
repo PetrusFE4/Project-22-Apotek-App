@@ -26,31 +26,11 @@ const HeaderDashboard = () => {
   }, [navigate]);
 */
   // Fungsi untuk menangani logout
-  const handleLogout = async () => {
-    try {
-      const response = await fetch("/api/auth/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data.message); // Menampilkan pesan logout sukses di console
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        window.location.href = "/";
-      } else {
-        const errorData = await response.json();
-        console.error("Error logging out:", errorData.message);
-      }
-    } catch (error) {
-      console.error("Error logging out:", error);
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      window.location.href = "/";
-    }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    console.log("Logout successful!");
+    navigate("/");
   };
   
   
@@ -102,7 +82,7 @@ const HeaderDashboard = () => {
               </Nav.Link>
             </Nav>
             <hr />
-            <ButtonGroup as={Link} to="/logout">
+            <ButtonGroup>
               <Button variant="outline-danger" onClick={handleLogout}>
                 Logout
               </Button>
