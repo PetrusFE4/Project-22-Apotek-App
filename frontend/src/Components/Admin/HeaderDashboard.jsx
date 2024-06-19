@@ -1,61 +1,29 @@
-import React, { useState, useEffect } from "react";
-import {
-  Navbar,
-  Container,
-  Nav,
-  Button,
-  ButtonGroup,
-  Offcanvas,
-} from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import "../../assets/css/Header.css";
+// src/Components/Admin/HeaderDashboard.js
+import { Link } from "react-router-dom";
+import React from "react";
+import { Navbar, Container, Nav, Dropdown, Offcanvas } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-const HeaderDashboard = () => {
-  const [userRole, setUserRole] = useState("");
+function HeaderDashboard() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Mengambil peran pengguna dari localStorage
-    const role = localStorage.getItem("role");
-    if (role) {
-      setUserRole(role);
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
-
-  // Fungsi untuk menangani logout
-  const handleLogout = async () => {
-    try {
-      const response = await fetch("/api/auth/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data.message); // Menampilkan pesan logout sukses di console
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        window.location.href = "/";
-      } else {
-        const errorData = await response.json();
-        console.error("Error logging out:", errorData.message);
-      }
-    } catch (error) {
-      console.error("Error logging out:", error);
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      window.location.href = "/";
-    }
+  const handleLogout = () => {
+    navigate("/logout");
   };
 
   return (
     <Navbar expand="lg" className="mb-3 navbar-container" sticky="top">
-      <Container fluid className="left-container">
+      <Container fluid>
         <Navbar.Toggle aria-controls={`offcanvasNavbarLabel-expand-lg`} />
+        <Navbar.Brand
+          as={Link}
+          to="/dashboard"
+          className="d-flex align-items-center"
+        >
+          <h1 className="fw-bold">
+            Pharmora<span>.id</span>
+          </h1>
+        </Navbar.Brand>
         <Navbar.Offcanvas
           id={`offcanvasNavbarLabel-expand-lg`}
           aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
@@ -74,62 +42,42 @@ const HeaderDashboard = () => {
             </Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <Nav className="justify-content-center flex-grow-1 pe-3 fs-5">
+            <Nav className="justify-content-center w-100 fs-5">
               <Nav.Link as={Link} to="/dashboard">
                 Dashboard
               </Nav.Link>
-              <Nav.Link as={Link} to="/dashboard/my-profile">
-                Profile
+              <Nav.Link as={Link} to="/dashboard/user-list">
+                User List
               </Nav.Link>
-              {userRole === "Admin" && (
-                <>
-                  <Nav.Link as={Link} to="/dashboard/user-list">
-                    User List
-                  </Nav.Link>
-                  <Nav.Link as={Link} to="/dashboard/order-list">
-                    Order List
-                  </Nav.Link>
-                  <Nav.Link as={Link} to="/dashboard/product-list">
-                    Product List
-                  </Nav.Link>
-                </>
-              )}
-              {userRole === "Superadmin" && (
-                <>
-                  <Nav.Link as={Link} to="/dashboard/user-list">
-                    User List
-                  </Nav.Link>
-                  <Nav.Link as={Link} to="/dashboard/add-admin">
-                    Add Admin
-                  </Nav.Link>
-                  <Nav.Link as={Link} to="/dashboard/order-list">
-                    Order List
-                  </Nav.Link>
-                  <Nav.Link as={Link} to="/dashboard/product-list">
-                    Product List
-                  </Nav.Link>
-                </>
-              )}
-              <Nav.Link as={Link} to="/dashboard/settings">
-                Settings
+              <Nav.Link as={Link} to="/dashboard/product-list">
+                Product List
+              </Nav.Link>
+              <Nav.Link as={Link} to="/dashboard/category-list">
+                Category List
+              </Nav.Link>
+              <Nav.Link as={Link} to="/dashboard/order-list">
+                Order List
               </Nav.Link>
             </Nav>
-            <hr />
-            <ButtonGroup as={Link} to="/logout">
-              <Button variant="outline-danger" onClick={handleLogout}>
-                Logout
-              </Button>
-            </ButtonGroup>
           </Offcanvas.Body>
         </Navbar.Offcanvas>
-        <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
-          <h1 className="fw-bold">
-            Pharmora<span>.id</span>
-          </h1>
-        </Navbar.Brand>
+        <Nav className="ms-auto">
+          <Dropdown align="end">
+            <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
+              Profile
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to="/dashboard/my-profile">
+                My Profile
+              </Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Nav>
       </Container>
     </Navbar>
   );
-};
+}
 
 export default HeaderDashboard;

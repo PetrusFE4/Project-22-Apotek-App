@@ -6,36 +6,25 @@ import {
   Button,
   ButtonGroup,
   Offcanvas,
+  Dropdown,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
 import "../../assets/css/Header.css";
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [authToken, setAuthToken] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const token = localStorage.getItem("token");
-      setIsLoggedIn(!!token);
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    const token = localStorage.getItem('authToken');
+    setAuthToken(token);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    setIsLoggedIn(false);
-    console.log("Logout sukses!");
-    navigate("/");
+    localStorage.removeItem('authToken');
+    setAuthToken(null);
+    navigate('/logout');
   };
 
   return (
@@ -79,7 +68,7 @@ const Header = () => {
             <Offcanvas.Body>
               <Nav className="justify-content-center flex-grow-1 pe-3">
                 <Nav.Link as={Link} to="/">
-                  Beranda
+                  Home
                 </Nav.Link>
                 <Nav.Link as={Link} to="/products">
                   Produk
@@ -92,19 +81,25 @@ const Header = () => {
                 </Nav.Link>
               </Nav>
               <hr />
-              {isLoggedIn ? (
-                <ButtonGroup>
-                  <Button variant="outline-danger" onClick={handleLogout}>
-                    Logout
-                  </Button>
-                </ButtonGroup>
+              {authToken ? (
+                <Dropdown align="end">
+                  <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
+                    Profile
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item as={Link} to="/user-profile">My Profile</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/my-order">Order List</Dropdown.Item> {/* Tambahkan link ke Order List */}
+                    <Dropdown.Divider />
+                    <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               ) : (
                 <>
-                  <ButtonGroup as={Link} to="/login" className="me-2">
-                    <Button variant="primary" className="ps-3 pe-3">Masuk</Button>
+                  <ButtonGroup as={Link} to="/login" className="me-3">
+                    <Button variant="primary">Masuk</Button>
                   </ButtonGroup>
                   <ButtonGroup as={Link} to="/register">
-                    <Button variant="outline-primary" className="ps-3 pe-3">Daftar</Button>
+                    <Button variant="outline-primary">Daftar</Button>
                   </ButtonGroup>
                 </>
               )}

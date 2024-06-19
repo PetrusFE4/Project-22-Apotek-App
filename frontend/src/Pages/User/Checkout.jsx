@@ -1,115 +1,114 @@
-import React, { useState } from 'react';
-import { useLocation,Link } from 'react-router-dom';
-import { Container, Row, Col, Card, Button, Form, ListGroup,Breadcrumb } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Form,
+  ListGroup,
+  Breadcrumb,
+} from "react-bootstrap";
 import Header from "../../Components/User/Header";
 import Footer from "../../Components/User/Footer";
+import api from "../../api"; // Import the API instance
 
 const Cart = () => {
-  const location = useLocation();
-  const cart = location.state.cart || [];
-  const [address, setAddress] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState("");
+  const [products, setProducts] = useState([]);
+  const [totalOrder, setTotalOrder] = useState(0);
+  const navigate = useNavigate();
 
-  const formatRupiah = (number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(number);
-  };
+  useEffect(() => {
+    // Fetch cart items from the backend
+    const fetchCartItems = async () => {
+      try {
+        const response = await api.get("/cart"); // Fetching the cart from the backend
+        setProducts(response.data.items);
+        const total = response.data.items.reduce(
+          (acc, product) => acc + product.product.price * product.quantity,
+          0
+        );
+        setTotalOrder(total);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
 
-  const totalPesanan = cart.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
-  const ongkosKirim = 10000;
-  const totalBayar = totalPesanan + ongkosKirim;
+    fetchCartItems();
+  }, []);
 
-  const handlePayment = () => {
-    const waNumber = "6281292573422";
-    let message = `Halo, saya ingin melakukan pembelian dengan rincian sebagai berikut:\n\n`;
-    cart.forEach((item, index) => {
-      message += `${index + 1}. ${item.product.title}\nJumlah: ${item.quantity}\nTotal: ${formatRupiah(item.product.price * item.quantity)}\n\n`;
-    });
-    message += `Total Pesanan: ${formatRupiah(totalPesanan)}\n`;
-    message += `Ongkos Kirim: ${formatRupiah(ongkosKirim)}\n`;
-    message += `Total Bayar: ${formatRupiah(totalBayar)}\n\n`;
-    message += `Dengan \n`;
-    message += `Nama: ${name}\n`;
-    message += `Nomor Telepon: ${phone}\n`;
-    message += `Alamat Pengiriman: ${address}\n`;
+  const totalPayment = totalOrder;
 
-    const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
-    window.open(waLink, '_blank');
+  const handleCheckout = async () => {
+    try {
+      const response = await api.post("/order/checkout", { address });
+      console.log(response);
+      if (response.status === 201) {
+        navigate("/order-success", { state: { order: response.data.order } });
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    }
   };
 
   return (
     <>
       <Header />
       <Container className="mt-5">
-      <Row>
+        <Row>
           <Breadcrumb>
-            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/products" }}>Kembali</Breadcrumb.Item>
+            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/products" }}>
+              Kembali
+            </Breadcrumb.Item>
           </Breadcrumb>
         </Row>
-        <Row>
+        <Row className="mt-3">
           <Col md={8}>
-            <Card className="mb-4">
+            <Card>
               <Card.Body>
-                <Card.Title>Informasi Pengiriman</Card.Title>
+                <Card.Title>Keranjang</Card.Title>
                 <Form>
-                  <Form.Group controlId="formName">
-                    <Form.Label className="mt-3">Nama Penerima</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Tambahkan Nama"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="formPhone">
-                    <Form.Label className="mt-3">Nomor Telepon</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Tambahkan Nomor Telepon"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
-                  </Form.Group>
                   <Form.Group controlId="formAddress">
                     <Form.Label className="mt-3">Alamat Pengiriman</Form.Label>
                     <Form.Control
                       type="text"
+                      required
                       placeholder="Tambahkan Alamat"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                     />
                   </Form.Group>
                 </Form>
-              </Card.Body>
-            </Card>
-
-            <Card>
-              <Card.Body>
-                <Card.Title>Produk</Card.Title>
-                {cart.length === 0 ? (
-                  <p>Keranjang belanja Anda kosong.</p>
-                ) : (
-                  cart.map((item, index) => (
-                    <Row key={index} className="mb-3">
-                      <Col md={2}>
-                        <img src={item.product.image} className="img-fluid" alt={item.product.title} />
-                      </Col>
-                      <Col xs={8}>
-                        <Card.Title>{item.product.title}</Card.Title>
-                        <Card.Text>Jumlah: {item.quantity}</Card.Text>
-                        <Card.Text>Total: {formatRupiah(item.product.price * item.quantity)}</Card.Text>
-                      </Col>
-                    </Row>
-                  ))
-                )}
+                <Card className="mt-4">
+                  <Card.Body>
+                    <Card.Title>Produk</Card.Title>
+                    <ListGroup variant="flush">
+                      {products.map((product) => (
+                        <ListGroup.Item key={product.product._id}>
+                          <Row>
+                            <Col md={2}>
+                              <img
+                                src={product.product.image}
+                                className="img-fluid"
+                                alt={product.product.name}
+                              />
+                            </Col>
+                            <Col md={6}>{product.product.productName}</Col>
+                            <Col md={2}>
+                              Rp {product.product.price.toLocaleString()}
+                            </Col>
+                            <Col md={2}>x {product.quantity}</Col>
+                          </Row>
+                        </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </Card.Body>
+                </Card>
               </Card.Body>
             </Card>
           </Col>
-
           <Col md={4}>
             <Card>
               <Card.Body>
@@ -118,23 +117,22 @@ const Cart = () => {
                   <ListGroup.Item>
                     <Row>
                       <Col>Total Pesanan</Col>
-                      <Col>{formatRupiah(totalPesanan)}</Col>
+                      <Col>Rp {totalOrder.toLocaleString()}</Col>
                     </Row>
                   </ListGroup.Item>
-                  <ListGroup.Item>
-                    <Row>
-                      <Col>Ongkos Kirim</Col>
-                      <Col>{formatRupiah(ongkosKirim)}</Col>
-                    </Row>
-                  </ListGroup.Item>
+                  <ListGroup.Item></ListGroup.Item>
                   <ListGroup.Item>
                     <Row>
                       <Col>Total Bayar</Col>
-                      <Col>{formatRupiah(totalBayar)}</Col>
+                      <Col>Rp {totalPayment.toLocaleString()}</Col>
                     </Row>
                   </ListGroup.Item>
                 </ListGroup>
-                <Button variant="primary" className="w-100 mt-3" onClick={handlePayment}>
+                <Button
+                  variant="primary"
+                  className="w-100 mt-3"
+                  onClick={handleCheckout}
+                >
                   Lanjutkan Pembayaran
                 </Button>
               </Card.Body>

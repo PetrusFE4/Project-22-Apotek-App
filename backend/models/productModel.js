@@ -4,7 +4,7 @@ const ProductSchema = new mongoose.Schema(
   {
     productName: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
     },
     id_category: {
@@ -17,39 +17,35 @@ const ProductSchema = new mongoose.Schema(
     },
     desc: {
       type: String,
-      required: true,
+      required: false,
     },
     indication: {
       type: String,
-      required: true,
+      required: false,
     },
     composition: {
       type: String,
-      required: true,
+      required: false,
     },
     dose: {
       type: String,
-      required: true,
+      required: false,
     },
     howtouse: {
       type: String,
-      required: true,
+      required: false,
     },
     effect: {
       type: String,
-      required: true,
+      required: false,
     },
     group: {
       type: String,
-      required: true,
+      required: false,
     },
     nie: {
       type: String,
-      required: true,
-    },
-    desc: {
-      type: String,
-      required: true,
+      required: false,
     },
     price: {
       type: Number,

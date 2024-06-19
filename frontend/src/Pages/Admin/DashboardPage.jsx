@@ -1,73 +1,104 @@
-import React, { useEffect, useState, useCallback } from "react";
-import HeaderDashboard from "../../Components/Admin/HeaderDashboard";
-import SalesSummary from "../Admin/SalesSummary";
-import PharmacyDatabase from "../Admin/PharmacyDatabase";
-import StoreAnalysis from "../Admin/StoreAnalysis";
-import CalendarWidget from "../Admin/CalendarWidget";
-import { getItems } from "./Api";
-import { Container, Row, Col } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import api from '../../api';
+import HeaderDashboard from '../../Components/Admin/HeaderDashboard';
 
 const DashboardPage = () => {
-  const [items, setItems] = useState([]);
-  const [totalSales, setTotalSales] = useState(0);
-  const [customers, setCustomers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
-  const [pharmacists, setPharmacists] = useState([]);
-  const [salesData, setSalesData] = useState([]);
-
-  const fetchItems = useCallback(async () => {
-    const data = await getItems();
-    setItems(data);
-    // Example data fetching
-    setTotalSales(5000); // Dummy data
-    setCustomers([
-      { id: 1, name: "John Doe", email: "john@example.com" },
-      { id: 2, name: "Jane Smith", email: "jane@example.com" }
-    ]);
-    setProducts([
-      { id: 1, name: "Product 1", price: 100 },
-      { id: 2, name: "Product 2", price: 200 }
-    ]);
-    setPharmacists([
-      { id: 1, name: "Pharmacist 1", email: "ph1@example.com" },
-      { id: 2, name: "Pharmacist 2", email: "ph2@example.com" }
-    ]);
-    setSalesData([
-      { date: '2021-01-01', sales: 400 },
-      { date: '2021-01-02', sales: 300 },
-      { date: '2021-01-03', sales: 500 }
-    ]);
-  }, []);
+  const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
+    fetchUsers();
+    fetchProducts();
+    fetchOrders();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await api.get('/users/all');
+      setUsers(response.data.slice(0, 3)); // Display first 3 users
+    } catch (error) {
+      console.error('Failed to fetch users', error);
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const response = await api.get('/products');
+      setProducts(response.data.products.slice(0, 3)); // Display first 3 products
+    } catch (error) {
+      console.error('Failed to fetch products', error);
+    }
+  };
+
+  const fetchOrders = async () => {
+    try {
+      const response = await api.get('/order/all');
+      setOrders(response.data.slice(0, 3)); // Display first 3 orders
+    } catch (error) {
+      console.error('Failed to fetch orders', error);
+    }
+  };
 
   return (
     <>
       <HeaderDashboard />
-      <Container fluid>
-        <Row className="mt-4">
+      <Container className="mt-5">
+        <Row>
           <Col md={4}>
-            <SalesSummary totalSales={totalSales} />
+            <Card>
+              <Card.Header>User List</Card.Header>
+              <Card.Body>
+                {users.map((user) => (
+                  <div key={user._id}>
+                    <p>{user.username}</p>
+                  </div>
+                ))}
+                <Button variant="primary" onClick={() => navigate('/dashboard/user-list')}>
+                  Show More
+                </Button>
+              </Card.Body>
+            </Card>
           </Col>
-          <Col md={8}>
-            <StoreAnalysis salesData={salesData} />
+          <Col md={4}>
+            <Card>
+              <Card.Header>Product List</Card.Header>
+              <Card.Body>
+                {products.map((product) => (
+                  <div key={product._id}>
+                    <p>{product.productName}</p>
+                    <p>{product.price}</p>
+                  </div>
+                ))}
+                <Button variant="primary" onClick={() => navigate('/dashboard/product-list')}>
+                  Show More
+                </Button>
+              </Card.Body>
+            </Card>
           </Col>
-        </Row>
-        <Row className="mt-4">
-          <Col md={12}>
-            <PharmacyDatabase customers={customers} products={products} pharmacists={pharmacists} />
-          </Col>
-        </Row>
-        <Row className="mt-4">
-          <Col md={12} className="d-flex justify-content-end">
-            <CalendarWidget />
+          <Col md={4}>
+            <Card>
+              <Card.Header>Order List</Card.Header>
+              <Card.Body>
+                {orders.map((order) => (
+                  <div key={order._id}>
+                    <p>{order.createdAt}</p>
+                    <p>{order.total}</p>
+                  </div>
+                ))}
+                <Button variant="primary" onClick={() => navigate('/dashboard/order-list')}>
+                  Show More
+                </Button>
+              </Card.Body>
+            </Card>
           </Col>
         </Row>
       </Container>
     </>
   );
-}
+};
 
 export default DashboardPage;

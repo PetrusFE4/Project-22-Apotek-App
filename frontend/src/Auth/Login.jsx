@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Alert, Card } from "react-bootstrap";
-import { Eye, EyeSlash } from "react-bootstrap-icons";
-import "../assets/css/Login.css";
 import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeSlash } from "react-bootstrap-icons";
+import ForgotPassword from "./ForgotPassword";
+import "../assets/css/Login.css";
+import api from "../api";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -10,54 +12,34 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // PASSWORD ICON
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-    console.log("Login button clicked");
-
     try {
-      const response = await fetch(
-        "https://e8c1-2a09-bac5-3a02-18be-00-277-1.ngrok-free.app/users/login",
-        {
-          method: "POST",
-          body: JSON.stringify({ username, password }),
-          headers: { "Content-Type": "application/json" },
+      const response = await api.post("/users/login", { username, password });
+      if (response.status === 200) {
+        const userData = response.data; // Assuming API returns user data with role and token
+        const token = userData.token;
+        localStorage.setItem("authToken", token);
+        localStorage.setItem("userData", JSON.stringify(userData.user));
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        if (
+          userData.user.role === "Admin" ||
+          userData.user.role === "Superadmin"
+        ) {
+          navigate("/dashboard");
+        } else {
+          navigate("/");
         }
-      );
-      console.log("Response received");
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Login failed:", errorData.message);
-        throw new Error(errorData.message || "Login gagal");
+      } else {
+        throw new Error("Login failed");
       }
-
-      const data = await response.json();
-      console.log("Login successful:", data);
-
-      // Pastikan respons mengandung properti "role"
-      //if (!data.role) {
-      //  throw new Error("Role information missing in response.");
-      //}
-
-      // Simpan token dan role di localStorage
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("role", data.role);
-
-      // Arahkan berdasarkan role pengguna
-      // (data.role === "User") {
-        console.log("Navigating to /");
-        navigate("/dashboard");
-      //} else if (data.role === "Admin" || data.role === "Superadmin") {
-      //  console.log("Navigating to /dashboard");
-      //  navigate("/dashboard");
-      //}
     } catch (error) {
-      console.error("Error during login:", error);
-      setError(error.message || "Login gagal");
+      setError(error.response?.data?.message || "Login failed");
     }
   };
 
@@ -106,19 +88,19 @@ const Login = () => {
             </div>
           </Form.Group>
 
-          <div className="d-flex justify-content-between mt-3">
+          <div className="d-flex justify-content-center mt-3">
             <Button variant="primary" type="submit">
-              Masuk
+              Login
             </Button>
-            <Button variant="link" as={Link} to="/forgot-password">
-              Lupa Password?
-            </Button>
+            {/* <Button variant="link" as={Link} to="/forgotpassword">
+              Forgot Password?
+            </Button> */}
           </div>
         </Form>
         <div className="mt-3 text-center">
-          Belum punya akun?
-          <Button variant="link" as={Link} to="/register">
-            Daftar
+          Don't have an account?
+          <Button variant="link" as={Link} to="/Register">
+            Register
           </Button>
         </div>
       </Card>

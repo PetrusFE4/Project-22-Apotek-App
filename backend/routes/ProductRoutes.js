@@ -1,23 +1,22 @@
-import express from "express";
+import express from 'express';
 import {
   getProducts,
   getProductsById,
   postProducts,
   updateProduct,
   deleteProduct,
-} from "../controllers/productController.js";
-import {
-  adminMiddleware,
-  authMiddleware,
-  superAdminMiddleware,
-} from "../middleware/UserMiddleware.js";
+  getProductsByCategory,
+} from '../controllers/productController.js';
+import upload from '../middleware/uploadMiddleware.js'; // Import middleware untuk upload file
+import { adminMiddleware, authMiddleware } from '../middleware/UserMiddleware.js';
 
 const router = express.Router();
 
-router.get("/", getProducts);
-router.get("/:productName", getProductsById);
-router.post("/", authMiddleware, adminMiddleware, postProducts);
-router.put("/:id", authMiddleware, adminMiddleware, updateProduct);
-router.delete("/:id", authMiddleware, superAdminMiddleware, deleteProduct);
+router.get('/', getProducts);
+router.get('/:id', getProductsById);
+router.post('/', authMiddleware, adminMiddleware, upload.single('image'), postProducts); // Gunakan middleware upload
+router.put('/:id', authMiddleware, adminMiddleware, upload.single('image'), updateProduct); // Gunakan middleware upload
+router.delete('/:id', authMiddleware, adminMiddleware, deleteProduct);
+router.get('/category/:id_category', getProductsByCategory);
 
 export default router;

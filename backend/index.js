@@ -24,6 +24,7 @@ app.get('/', (req, res) => {
 })
 
 // Routes
+app.use('/uploads', express.static('uploads'));
 app.use('/users', userRoutes);
 app.use('/products', productRoutes);
 app.use('/category', categoryRoutes);
