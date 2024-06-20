@@ -21,7 +21,7 @@ export const register = async (req, res) => {
         const isFirstUser = (await User.countDocuments({})) === 0;
 
         // Set role based on whether it's the first user or not
-        const role = isFirstUser ? 'Superadmin' : 'User ';
+        const role = isFirstUser ? 'Superadmin' : 'User';
 
         user = new User({ username, email, password, img_url, phone, address, role });
 
