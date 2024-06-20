@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import {
   Envelope,
@@ -10,9 +10,21 @@ import Header from "../../Components/User/Header";
 import Footer from "../../Components/User/Footer";
 
 const Contact = () => {
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const whatsappMessage = `Nama Lengkap: ${fullname}%0AEmail: ${email}%0ANo. Telepon: ${phone}%0APesan: ${message}`;
+    const whatsappURL = `https://api.whatsapp.com/send?phone=+6285111711281&text=${whatsappMessage}`;
+    window.open(whatsappURL, "_blank");
+  };
+
   return (
     <>
-    <Header/>
+      <Header />
       <section
         id="scrollspyContact"
         className="py-4 py-md-4 py-xl-8 pb-xxl-0 bsb-section-pt-xxl-1"
@@ -31,14 +43,19 @@ const Contact = () => {
           <Row className="gy-4 gy-md-5 gy-lg-0 align-items-md-center">
             <Col xs={12} lg={6}>
               <div className="bg-accent shadow border-0 overflow-hidden">
-                <Form action="#!">
+                <Form onSubmit={handleSubmit}>
                   <Row className="gy-4 gy-xl-5 p-4 p-xl-5">
                     <Col xs={12}>
                       <Form.Group controlId="fullname">
                         <Form.Label>
                           Nama Lengkap<span className="text-danger">*</span>
                         </Form.Label>
-                        <Form.Control type="text" required />
+                        <Form.Control
+                          type="text"
+                          required
+                          value={fullname}
+                          onChange={(e) => setFullname(e.target.value)}
+                        />
                       </Form.Group>
                     </Col>
                     <Col xs={12} md={6}>
@@ -46,21 +63,22 @@ const Contact = () => {
                         <Form.Label>
                           Email <span className="text-danger">*</span>
                         </Form.Label>
-                        <Form.Control type="email" required />
+                        <Form.Control
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
                       </Form.Group>
                     </Col>
                     <Col xs={12} md={6}>
                       <Form.Group controlId="phone">
                         <Form.Label>No. Telepon</Form.Label>
-                        <Form.Control type="tel" />
-                      </Form.Group>
-                    </Col>
-                    <Col xs={12}>
-                      <Form.Group controlId="subject">
-                        <Form.Label>
-                          Judul <span className="text-danger">*</span>
-                        </Form.Label>
-                        <Form.Control type="text" required />
+                        <Form.Control
+                          type="tel"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                        />
                       </Form.Group>
                     </Col>
                     <Col xs={12}>
@@ -68,7 +86,13 @@ const Contact = () => {
                         <Form.Label>
                           Pesan <span className="text-danger">*</span>
                         </Form.Label>
-                        <Form.Control as="textarea" rows={3} required />
+                        <Form.Control
+                          as="textarea"
+                          rows={3}
+                          required
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                        />
                       </Form.Group>
                     </Col>
                     <Col xs={12}>
@@ -147,7 +171,7 @@ const Contact = () => {
           </Row>
         </Container>
       </section>
-      <Footer/>
+      <Footer />
     </>
   );
 };

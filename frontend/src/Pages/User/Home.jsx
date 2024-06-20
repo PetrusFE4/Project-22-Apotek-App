@@ -14,18 +14,18 @@ import diagnosis05 from "../../assets/img/diagnosis05.png";
 import diagnosis06 from "../../assets/img/diagnosis06.png";
 import "../../assets/css/Home.css";
 import api from "../../api";
-import FloatingCart from "../../Components/User/FloatingCart";
+import FloatingCart from '../../Components/User/FloatingCart';
 
 const Home = () => {
   const navigate = useNavigate();
-  // const crispScriptRef = useRef(null);
+  const crispScriptRef = useRef(null);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await api.get("/products");
+        const response = await api.get('/products');
         setProducts(response.data.products);
       } catch (error) {
         console.error("There was an error fetching the products!", error);
@@ -38,9 +38,9 @@ const Home = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await api.get("/category");
+        const response = await api.get('/category');
         setCategories(response.data.category);
-        console.log(setCategories);
+        console.log(setCategories)
       } catch (error) {
         console.error("There was an error fetching the categories!", error);
       }
@@ -148,44 +148,35 @@ const Home = () => {
 
       {/* KATEGORI */}
       <Container className="py-3 py-md-5 py-xl-8 pb-xxl-0 bsb-section-pt-xxl-1 category-container">
-        <Row className="justify-content-center category-box border-0">
-          <Col xs={12}>
-            <Row className="align-items-center justify-content-between">
-              <Col>
-                <h5>Kategori</h5>
-              </Col>
-            </Row>
-            <Row className="g-3 justify-content-center">
-              {categories.map((category) => (
-                <Col
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={2}
-                  key={category.id_category}
-                  className="d-flex justify-content-center"
-                >
-                  <Card className="h-100 category-card border-0">
-                    <Link
-                      to={`/products/${category.id_category}`}
-                      className="text-decoration-none text-dark"
-                    >
-                      <Card.Body className="d-flex flex-column align-items-center">
-                        <div className="display-6 category-icon">
-                          {category.icon || "💊"} {/* Placeholder icon */}
-                        </div>
-                        <Card.Title className="mt-3 category-name">
-                          {category.name_category}
-                        </Card.Title>
-                      </Card.Body>
-                    </Link>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
+  <Row className="justify-content-center category-box border-0">
+    <Col xs={12}>
+      <Row className="align-items-center justify-content-between">
+        <Col>
+          <h5>Kategori</h5>
+        </Col>
+      </Row>
+      <Row className="g-3 justify-content-center">
+        {categories.map((category) => (
+          <Col xs={12} sm={6} md={4} lg={2} key={category.id_category} className="d-flex justify-content-center">
+            <Card className="h-100 category-card border-0">
+              <Link to={`/products/${category.id_category}`} className="text-decoration-none text-dark">
+                <Card.Body className="d-flex flex-column align-items-center">
+                  <div className="display-6 category-icon">
+                    {category.icon || "💊"} {/* Placeholder icon */}
+                  </div>
+                  <Card.Title className="mt-3 category-name">
+                    {category.name_category}
+                  </Card.Title>
+                </Card.Body>
+              </Link>
+            </Card>
           </Col>
-        </Row>
-      </Container>
+        ))}
+      </Row>
+    </Col>
+  </Row>
+</Container>
+
 
       {/* ARTICLES */}
       <Container className="py-3 py-md-5 py-xl-8 pb-xxl-0 bsb-section-pt-xxl-1 diagnosis-container">

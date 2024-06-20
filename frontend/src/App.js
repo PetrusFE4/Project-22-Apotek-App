@@ -8,6 +8,8 @@ import Login from './Auth/Login';
 import Register from './Auth/Register';
 import Logout from './Auth/Logout';
 import AdminRoute from './Auth/AdminRoute';
+import ForgotPassword from './Auth/ForgotPassword';
+import ResetPassword from './Auth/ResetPassword';
 
 // PAGES
 import Home from './Pages/User/Home';
@@ -54,6 +56,8 @@ const App = () => {
             <Route path="*" element={<NotFoundPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/logout" element={<Logout />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
 
             {/* DASHBOARD */}
             <Route path="/dashboard" element={<AdminRoute element={<DashboardPage />} />} />

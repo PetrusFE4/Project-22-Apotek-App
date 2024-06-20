@@ -65,14 +65,7 @@ function UserProfilePage() {
       <Container className="mt-5">
         <Card className="shadow border-0">
           <Card.Body>
-            <h2
-              className="title-profile"
-              style={{
-                fontSize: "24px",
-                fontWeight: "bold",
-                marginBottom: "30px",
-              }}
-            >
+            <h2 className="title-profile" style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "30px" }}>
               My Profile
             </h2>
             <Form onSubmit={saveProfile}>
@@ -96,9 +89,7 @@ function UserProfilePage() {
                 </Col>
                 <Col md={6} className="mb-3">
                   <Form.Group controlId="email">
-                    <Form.Label className="fw-semibold">
-                      Email Address
-                    </Form.Label>
+                    <Form.Label className="fw-semibold">Email Address</Form.Label>
                     {editMode ? (
                       <Form.Control
                         type="email"
@@ -115,9 +106,7 @@ function UserProfilePage() {
                 </Col>
                 <Col md={6} className="mb-3">
                   <Form.Group controlId="phoneNumber">
-                    <Form.Label className="fw-semibold">
-                      Phone Number
-                    </Form.Label>
+                    <Form.Label className="fw-semibold">Phone Number</Form.Label>
                     {editMode ? (
                       <Form.Control
                         type="tel"

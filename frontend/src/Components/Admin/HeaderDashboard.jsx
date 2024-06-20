@@ -2,24 +2,20 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import { Navbar, Container, Nav, Dropdown, Offcanvas } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 function HeaderDashboard() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate("/logout");
+    navigate('/logout');
   };
 
   return (
     <Navbar expand="lg" className="mb-3 navbar-container" sticky="top">
       <Container fluid>
         <Navbar.Toggle aria-controls={`offcanvasNavbarLabel-expand-lg`} />
-        <Navbar.Brand
-          as={Link}
-          to="/dashboard"
-          className="d-flex align-items-center"
-        >
+        <Navbar.Brand as={Link} to="/dashboard" className="d-flex align-items-center">
           <h1 className="fw-bold">
             Pharmora<span>.id</span>
           </h1>
@@ -36,8 +32,7 @@ function HeaderDashboard() {
               className="d-flex align-items-center"
             >
               <h3 className="fw-bold">
-                Pharmora
-                <span style={{ color: "rgba(226,23,70,0.8)" }}>.id</span>
+                Pharmora<span style={{ color: "rgba(226,23,70,0.8)" }}>.id</span>
               </h3>
             </Offcanvas.Title>
           </Offcanvas.Header>
@@ -67,9 +62,7 @@ function HeaderDashboard() {
               Profile
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item as={Link} to="/dashboard/my-profile">
-                My Profile
-              </Dropdown.Item>
+              <Dropdown.Item as={Link} to="/dashboard/my-profile">My Profile</Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
             </Dropdown.Menu>

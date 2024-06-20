@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-import { Container, Form, Button, Alert, Card } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeSlash } from "react-bootstrap-icons";
-import ForgotPassword from "./ForgotPassword";
-import "../assets/css/Login.css";
-import api from "../api";
+import React, { useState } from 'react';
+import { Container, Form, Button, Alert, Card } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeSlash } from 'react-bootstrap-icons';
+import '../assets/css/Login.css';
+import api from '../api';
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   // PASSWORD ICON
@@ -18,28 +17,25 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     try {
-      const response = await api.post("/users/login", { username, password });
+      const response = await api.post('/users/login', { username, password });
       if (response.status === 200) {
         const userData = response.data; // Assuming API returns user data with role and token
         const token = userData.token;
-        localStorage.setItem("authToken", token);
-        localStorage.setItem("userData", JSON.stringify(userData.user));
-        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        if (
-          userData.user.role === "Admin" ||
-          userData.user.role === "Superadmin"
-        ) {
-          navigate("/dashboard");
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('userData', JSON.stringify(userData.user));
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        if (userData.user.role === 'Admin' || userData.user.role === 'Superadmin') {
+          navigate('/dashboard');
         } else {
-          navigate("/");
+          navigate('/');
         }
       } else {
-        throw new Error("Login failed");
+        throw new Error('Login failed');
       }
     } catch (error) {
-      setError(error.response?.data?.message || "Login failed");
+      setError(error.response?.data?.message || 'Login failed');
     }
   };
 
@@ -70,7 +66,7 @@ const Login = () => {
             <Form.Label>Password</Form.Label>
             <div className="input-group">
               <Form.Control
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -81,25 +77,25 @@ const Login = () => {
                 variant="outline-primary"
                 className="mb-2"
                 onClick={togglePasswordVisibility}
-                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeSlash /> : <Eye />}
               </Button>
             </div>
           </Form.Group>
 
-          <div className="d-flex justify-content-center mt-3">
+          <div className="d-flex justify-content-between mt-3">
             <Button variant="primary" type="submit">
               Login
             </Button>
-            {/* <Button variant="link" as={Link} to="/forgotpassword">
+            <Button variant="link" as={Link} to="/forgot-password">
               Forgot Password?
-            </Button> */}
+            </Button>
           </div>
         </Form>
         <div className="mt-3 text-center">
           Don't have an account?
-          <Button variant="link" as={Link} to="/Register">
+          <Button variant="link" as={Link} to="/register">
             Register
           </Button>
         </div>

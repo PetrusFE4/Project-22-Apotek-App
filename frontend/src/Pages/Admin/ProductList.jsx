@@ -1,32 +1,24 @@
-import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Table,
-  Button,
-  Modal,
-  Form,
-  Row,
-  Col,
-} from "react-bootstrap";
-import api from "../../api";
-import HeaderDashboard from "../../Components/Admin/HeaderDashboard";
+import React, { useState, useEffect } from 'react';
+import { Container, Table, Button, Modal, Form, Row, Col } from 'react-bootstrap';
+import api from '../../api';
+import HeaderDashboard from '../../Components/Admin/HeaderDashboard';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [newProduct, setNewProduct] = useState({
-    productName: "",
-    id_category: "",
+    productName: '',
+    id_category: '',
     image: null,
-    desc: "",
-    indication: "",
-    composition: "",
-    dose: "",
-    howtouse: "",
-    effect: "-",
-    group: "",
-    nie: "",
+    desc: '',
+    indication: '',
+    composition: '',
+    dose: '',
+    howtouse: '',
+    effect: '-',
+    group: '',
+    nie: '',
     price: 0,
   });
   const [categories, setCategories] = useState([]);
@@ -38,27 +30,27 @@ const ProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await api.get("/products");
+      const response = await api.get('/products');
       setProducts(response.data.products);
     } catch (error) {
-      console.error("Failed to fetch products", error);
+      console.error('Failed to fetch products', error);
     }
   };
 
   const fetchCategories = async () => {
     try {
-      const response = await api.get("/category");
+      const response = await api.get('/category');
       setCategories(response.data.category);
     } catch (error) {
-      console.error("Failed to fetch categories", error);
+      console.error('Failed to fetch categories', error);
     }
   };
 
   // Function to format price to IDR
   const formatIDR = (price) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
     }).format(price);
   };
 
@@ -67,17 +59,17 @@ const ProductList = () => {
     setShowModal(false);
     setSelectedProduct(null); // Reset selected product after modal close
     setNewProduct({
-      productName: "",
-      id_category: "",
+      productName: '',
+      id_category: '',
       image: null,
-      desc: "",
-      indication: "",
-      composition: "",
-      dose: "",
-      howtouse: "",
-      effect: "-",
-      group: "",
-      nie: "",
+      desc: '',
+      indication: '',
+      composition: '',
+      dose: '',
+      howtouse: '',
+      effect: '-',
+      group: '',
+      nie: '',
       price: 0,
     });
   };
@@ -88,17 +80,17 @@ const ProductList = () => {
       setNewProduct({ ...product }); // Set newProduct state for editing existing product
     } else {
       setNewProduct({
-        productName: "",
-        id_category: "",
+        productName: '',
+        id_category: '',
         image: null,
-        desc: "",
-        indication: "",
-        composition: "",
-        dose: "",
-        howtouse: "",
-        effect: "-",
-        group: "",
-        nie: "",
+        desc: '',
+        indication: '',
+        composition: '',
+        dose: '',
+        howtouse: '',
+        effect: '-',
+        group: '',
+        nie: '',
         price: 0,
       });
     }
@@ -108,7 +100,7 @@ const ProductList = () => {
   // Form input change handler for new product
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === "image") {
+    if (name === 'image') {
       setNewProduct({ ...newProduct, [name]: e.target.files[0] });
     } else {
       setNewProduct({ ...newProduct, [name]: value });
@@ -119,30 +111,30 @@ const ProductList = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("productName", newProduct.productName);
-    formData.append("id_category", newProduct.id_category);
-    formData.append("image", newProduct.image);
-    formData.append("desc", newProduct.desc);
-    formData.append("indication", newProduct.indication);
-    formData.append("composition", newProduct.composition);
-    formData.append("dose", newProduct.dose);
-    formData.append("howtouse", newProduct.howtouse);
-    formData.append("effect", newProduct.effect);
-    formData.append("group", newProduct.group);
-    formData.append("nie", newProduct.nie);
-    formData.append("price", newProduct.price);
+    formData.append('productName', newProduct.productName);
+    formData.append('id_category', newProduct.id_category);
+    formData.append('image', newProduct.image);
+    formData.append('desc', newProduct.desc);
+    formData.append('indication', newProduct.indication);
+    formData.append('composition', newProduct.composition);
+    formData.append('dose', newProduct.dose);
+    formData.append('howtouse', newProduct.howtouse);
+    formData.append('effect', newProduct.effect);
+    formData.append('group', newProduct.group);
+    formData.append('nie', newProduct.nie);
+    formData.append('price', newProduct.price);
 
     try {
-      const response = await api.post("/products", formData, {
+      const response = await api.post('/products', formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       });
-      console.log("New product added:", response.data);
+      console.log('New product added:', response.data);
       fetchProducts(); // Fetch products again to update the list
       handleCloseModal(); // Close the modal after successful submission
     } catch (error) {
-      console.error("Failed to add new product", error);
+      console.error('Failed to add new product', error);
     }
   };
 
@@ -150,36 +142,32 @@ const ProductList = () => {
   const handleEditProduct = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("productName", newProduct.productName);
-    formData.append("id_category", newProduct.id_category);
+    formData.append('productName', newProduct.productName);
+    formData.append('id_category', newProduct.id_category);
     if (newProduct.image) {
-      formData.append("image", newProduct.image);
+      formData.append('image', newProduct.image);
     }
-    formData.append("desc", newProduct.desc);
-    formData.append("indication", newProduct.indication);
-    formData.append("composition", newProduct.composition);
-    formData.append("dose", newProduct.dose);
-    formData.append("howtouse", newProduct.howtouse);
-    formData.append("effect", newProduct.effect);
-    formData.append("group", newProduct.group);
-    formData.append("nie", newProduct.nie);
-    formData.append("price", newProduct.price);
+    formData.append('desc', newProduct.desc);
+    formData.append('indication', newProduct.indication);
+    formData.append('composition', newProduct.composition);
+    formData.append('dose', newProduct.dose);
+    formData.append('howtouse', newProduct.howtouse);
+    formData.append('effect', newProduct.effect);
+    formData.append('group', newProduct.group);
+    formData.append('nie', newProduct.nie);
+    formData.append('price', newProduct.price);
 
     try {
-      const response = await api.put(
-        `/products/${selectedProduct._id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("Product updated:", response.data);
+      const response = await api.put(`/products/${selectedProduct._id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Product updated:', response.data);
       fetchProducts(); // Fetch products again to update the list
       handleCloseModal(); // Close the modal after successful update
     } catch (error) {
-      console.error("Failed to update product", error);
+      console.error('Failed to update product', error);
     }
   };
 
@@ -187,11 +175,11 @@ const ProductList = () => {
   const handleDeleteProduct = async () => {
     try {
       const response = await api.delete(`/products/${selectedProduct._id}`);
-      console.log("Product deleted:", response.data);
+      console.log('Product deleted:', response.data);
       fetchProducts(); // Fetch products again to update the list
       handleCloseModal(); // Close the modal after successful deletion
     } catch (error) {
-      console.error("Failed to delete product", error);
+      console.error('Failed to delete product', error);
     }
   };
 
@@ -224,25 +212,17 @@ const ProductList = () => {
                   <td>{index + 1}</td>
                   <td>
                     {product.image ? (
-                      <img
-                        src={product.image}
-                        alt={product.productName}
-                        style={{ maxWidth: "100px" }}
-                      />
+                      <img src={product.image} alt={product.productName} style={{ maxWidth: '100px' }} />
                     ) : (
-                      "No Image"
+                      'No Image'
                     )}
                   </td>
                   <td>{product.productName}</td>
                   <td>{product.id_category}</td>
                   <td>{formatIDR(product.price)}</td>
-                  <td>{product.nie || "N/A"}</td>
+                  <td>{product.nie || 'N/A'}</td>
                   <td>
-                    <Button
-                      variant="info"
-                      size="sm"
-                      onClick={() => handleShowModal(product)}
-                    >
+                    <Button variant="info" size="sm" onClick={() => handleShowModal(product)}>
                       View Detail
                     </Button>
                   </td>
@@ -255,9 +235,7 @@ const ProductList = () => {
       {/* Modal for viewing and editing product */}
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>
-            {selectedProduct ? "Edit Product" : "Add New Product"}
-          </Modal.Title>
+          <Modal.Title>{selectedProduct ? 'Edit Product' : 'Add New Product'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={selectedProduct ? handleEditProduct : handleSubmit}>
@@ -285,10 +263,7 @@ const ProductList = () => {
                   >
                     <option value="">Select Category</option>
                     {categories.map((category) => (
-                      <option
-                        key={category.id_category}
-                        value={category.id_category}
-                      >
+                      <option key={category.id_category} value={category.id_category}>
                         {category.name_category}
                       </option>
                     ))}
@@ -311,19 +286,11 @@ const ProductList = () => {
                   <Form.Label>Product Image</Form.Label>
                   {newProduct.image && newProduct.image instanceof File ? (
                     <div>
-                      <img
-                        src={URL.createObjectURL(newProduct.image)}
-                        alt="Product Image"
-                        style={{ maxWidth: "200px" }}
-                      />
+                      <img src={URL.createObjectURL(newProduct.image)} alt="Product Image" style={{ maxWidth: '200px' }} />
                     </div>
                   ) : newProduct.image ? (
                     <div>
-                      <img
-                        src={newProduct.image}
-                        alt="Product Image"
-                        style={{ maxWidth: "200px" }}
-                      />
+                      <img src={newProduct.image} alt="Product Image" style={{ maxWidth: '200px' }} />
                     </div>
                   ) : (
                     <div>No Image</div>
@@ -433,7 +400,7 @@ const ProductList = () => {
               Close
             </Button>
             <Button variant="primary" type="submit">
-              {selectedProduct ? "Save Changes" : "Add Product"}
+              {selectedProduct ? 'Save Changes' : 'Add Product'}
             </Button>
             {selectedProduct && (
               <Button variant="danger" onClick={handleDeleteProduct}>

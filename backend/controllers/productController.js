@@ -6,7 +6,7 @@ export const getProducts = async (req, res) => {
     let products = await Product.find();
     const productsWithImageUrl = products.map(product => ({
       ...product._doc,
-      image: product.image ? `http://localhost:5000${product.image}` : null
+      image: product.image ? `${req.protocol}://${req.get('host')}${product.image}` : null
     }));
     res.status(201).json({ products: productsWithImageUrl });
   } catch (error) {
@@ -56,7 +56,7 @@ export const getProductsById = async (req, res) => {
     // Append image URL if image path exists
     const productWithImageUrl = {
       ...product._doc,
-      image: product.image ? `http://localhost:5000${product.image}` : null
+      image: product.image ? `${req.protocol}://${req.get('host')}${product.image}` : null
     };
 
     res.status(200).json({ product: productWithImageUrl });
@@ -134,7 +134,7 @@ export const getProductsByCategory = async (req, res) => {
     // Append image URL for each product if image path exists
     const productsWithImageUrl = products.map(product => ({
       ...product._doc,
-      image: product.image ? `http://localhost:5000${product.image}` : null
+      image: product.image ? `${req.protocol}://${req.get('host')}${product.image}` : null
     }));
 
     res.status(200).json({ products: productsWithImageUrl });

@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Form,
-  ListGroup,
-  Breadcrumb,
-} from "react-bootstrap";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Card, Button, Form, ListGroup, Breadcrumb } from 'react-bootstrap';
 import Header from "../../Components/User/Header";
 import Footer from "../../Components/User/Footer";
-import api from "../../api"; // Import the API instance
+import api from '../../api'; // Import the API instance
 
 const Cart = () => {
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState('');
   const [products, setProducts] = useState([]);
   const [totalOrder, setTotalOrder] = useState(0);
   const navigate = useNavigate();
@@ -24,15 +15,12 @@ const Cart = () => {
     // Fetch cart items from the backend
     const fetchCartItems = async () => {
       try {
-        const response = await api.get("/cart"); // Fetching the cart from the backend
+        const response = await api.get('/cart'); // Fetching the cart from the backend
         setProducts(response.data.items);
-        const total = response.data.items.reduce(
-          (acc, product) => acc + product.product.price * product.quantity,
-          0
-        );
+        const total = response.data.items.reduce((acc, product) => acc + product.product.price * product.quantity, 0);
         setTotalOrder(total);
       } catch (error) {
-        console.error("Error fetching cart items:", error);
+        console.error('Error fetching cart items:', error);
       }
     };
 
@@ -43,13 +31,13 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     try {
-      const response = await api.post("/order/checkout", { address });
-      console.log(response);
+      const response = await api.post('/order/checkout', { address });
+      console.log(response)
       if (response.status === 201) {
-        navigate("/order-success", { state: { order: response.data.order } });
+        navigate('/order-success', { state: { order: response.data.order } });
       }
     } catch (error) {
-      console.error("Error during checkout:", error);
+      console.error('Error during checkout:', error);
     }
   };
 
@@ -59,9 +47,7 @@ const Cart = () => {
       <Container className="mt-5">
         <Row>
           <Breadcrumb>
-            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/products" }}>
-              Kembali
-            </Breadcrumb.Item>
+            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/products" }}>Kembali</Breadcrumb.Item>
           </Breadcrumb>
         </Row>
         <Row className="mt-3">
@@ -72,12 +58,12 @@ const Cart = () => {
                 <Form>
                   <Form.Group controlId="formAddress">
                     <Form.Label className="mt-3">Alamat Pengiriman</Form.Label>
-                    <Form.Control
-                      type="text"
+                    <Form.Control 
+                      type="text" 
                       required
-                      placeholder="Tambahkan Alamat"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
+                      placeholder="Tambahkan Alamat" 
+                      value={address} 
+                      onChange={(e) => setAddress(e.target.value)} 
                     />
                   </Form.Group>
                 </Form>
@@ -85,20 +71,14 @@ const Cart = () => {
                   <Card.Body>
                     <Card.Title>Produk</Card.Title>
                     <ListGroup variant="flush">
-                      {products.map((product) => (
+                      {products.map(product => (
                         <ListGroup.Item key={product.product._id}>
                           <Row>
                             <Col md={2}>
-                              <img
-                                src={product.product.image}
-                                className="img-fluid"
-                                alt={product.product.name}
-                              />
+                              <img src={product.product.image} className="img-fluid" alt={product.product.name} />
                             </Col>
                             <Col md={6}>{product.product.productName}</Col>
-                            <Col md={2}>
-                              Rp {product.product.price.toLocaleString()}
-                            </Col>
+                            <Col md={2}>Rp {product.product.price.toLocaleString()}</Col>
                             <Col md={2}>x {product.quantity}</Col>
                           </Row>
                         </ListGroup.Item>
@@ -120,7 +100,8 @@ const Cart = () => {
                       <Col>Rp {totalOrder.toLocaleString()}</Col>
                     </Row>
                   </ListGroup.Item>
-                  <ListGroup.Item></ListGroup.Item>
+                  <ListGroup.Item>
+                  </ListGroup.Item>
                   <ListGroup.Item>
                     <Row>
                       <Col>Total Bayar</Col>
@@ -128,11 +109,7 @@ const Cart = () => {
                     </Row>
                   </ListGroup.Item>
                 </ListGroup>
-                <Button
-                  variant="primary"
-                  className="w-100 mt-3"
-                  onClick={handleCheckout}
-                >
+                <Button variant="primary" className="w-100 mt-3" onClick={handleCheckout}>
                   Lanjutkan Pembayaran
                 </Button>
               </Card.Body>

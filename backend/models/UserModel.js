@@ -1,3 +1,4 @@
+// src/models/UserModel.js
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
@@ -30,6 +31,12 @@ const UserSchema = new mongoose.Schema({
     address: {
         type: String,
     },
+    resetPasswordToken: {
+        type: String
+    },
+    resetPasswordExpire: {
+        type: Date
+    }
 },
 {
     timestamps: true

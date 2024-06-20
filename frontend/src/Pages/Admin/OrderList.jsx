@@ -80,9 +80,9 @@ const OrderListPage = () => {
                   <td>{index + 1}</td>
                   <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                   <td>
-                    {new Intl.NumberFormat("id-ID", {
-                      style: "currency",
-                      currency: "IDR",
+                    {new Intl.NumberFormat('id-ID', {
+                      style: 'currency',
+                      currency: 'IDR',
                     }).format(order.total)}
                   </td>
                   <td>{order.status}</td>
@@ -93,7 +93,7 @@ const OrderListPage = () => {
                       onClick={() => handleShowModal(order)}
                     >
                       View Order
-                    </Button>{" "}
+                    </Button>{' '}
                     {/* <Button
                       variant="success"
                       size="sm"
@@ -117,17 +117,11 @@ const OrderListPage = () => {
           {selectedOrder && (
             <>
               <h5>User: {selectedOrder.user.username}</h5>
-              <h5>
-                Order Date:{" "}
-                {new Date(selectedOrder.createdAt).toLocaleDateString()}
-              </h5>
-              <h5>
-                Total Amount:{" "}
-                {new Intl.NumberFormat("id-ID", {
-                  style: "currency",
-                  currency: "IDR",
-                }).format(selectedOrder.total)}
-              </h5>
+              <h5>Order Date: {new Date(selectedOrder.createdAt).toLocaleDateString()}</h5>
+              <h5>Total Amount: {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(selectedOrder.total)}</h5>
               <h5>Status: {selectedOrder.status}</h5>
               <h5>Address: {selectedOrder.address}</h5>
               <hr />
@@ -145,20 +139,12 @@ const OrderListPage = () => {
                   {selectedOrder.items.map((item, idx) => (
                     <tr key={idx}>
                       <td>{idx + 1}</td>
-                      <td>
-                        {item.product
-                          ? item.product.productName
-                          : "Product Not Available"}
-                      </td>
+                      <td>{item.product ? item.product.productName : 'Product Not Available'}</td>
                       <td>{item.quantity}</td>
-                      <td>
-                        {item.product
-                          ? new Intl.NumberFormat("id-ID", {
-                              style: "currency",
-                              currency: "IDR",
-                            }).format(item.product.price)
-                          : "-"}
-                      </td>
+                      <td>{item.product ? new Intl.NumberFormat('id-ID', {
+                          style: 'currency',
+                          currency: 'IDR',
+                        }).format(item.product.price) : '-'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -172,21 +158,15 @@ const OrderListPage = () => {
           </Button>
           <Button
             variant="danger"
-            onClick={() => handleUpdateStatus("Cancelled")}
-            disabled={
-              selectedOrder?.status === "Cancelled" ||
-              selectedOrder?.status === "Successful"
-            }
+            onClick={() => handleUpdateStatus('Cancelled')}
+            disabled={selectedOrder?.status === 'Cancelled' || selectedOrder?.status === 'Successful'}
           >
             Cancel Order
           </Button>
           <Button
             variant="primary"
-            onClick={() => handleUpdateStatus("Successful")}
-            disabled={
-              selectedOrder?.status === "Successful" ||
-              selectedOrder?.status === "Cancelled"
-            }
+            onClick={() => handleUpdateStatus('Successful')}
+            disabled={selectedOrder?.status === 'Successful' || selectedOrder?.status === 'Cancelled'}
           >
             Update Payment Status to Successful
           </Button>

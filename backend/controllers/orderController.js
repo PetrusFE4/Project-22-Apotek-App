@@ -20,7 +20,7 @@ export const getOrder = async (req, res) => {
             const itemsWithImage = order.items.map(item => ({
                 product: {
                     ...item.product._doc,
-                    image: item.product.image ? `http://localhost:5000${item.product.image}` : null
+                    image: item.product.image ? `${req.protocol}://${req.get('host')}${item.product.image}` : null
                 },
                 quantity: item.quantity
             }));

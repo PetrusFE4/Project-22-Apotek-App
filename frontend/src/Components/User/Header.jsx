@@ -68,7 +68,7 @@ const Header = () => {
             <Offcanvas.Body>
               <Nav className="justify-content-center flex-grow-1 pe-3">
                 <Nav.Link as={Link} to="/">
-                  Home
+                  Beranda
                 </Nav.Link>
                 <Nav.Link as={Link} to="/products">
                   Produk
@@ -84,11 +84,11 @@ const Header = () => {
               {authToken ? (
                 <Dropdown align="end">
                   <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
-                    Profile
+                    Pengguna
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to="/user-profile">My Profile</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/my-order">Order List</Dropdown.Item> {/* Tambahkan link ke Order List */}
+                    <Dropdown.Item as={Link} to="/user-profile">Profil Saya</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/my-order">Data Order</Dropdown.Item> {/* Tambahkan link ke Order List */}
                     <Dropdown.Divider />
                     <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                   </Dropdown.Menu>
