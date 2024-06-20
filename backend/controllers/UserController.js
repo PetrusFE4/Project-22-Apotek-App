@@ -17,7 +17,13 @@ export const register = async (req, res) => {
             return res.status(400).json({ msg: 'Email already exists' });
         }
 
-        user = new User({ username, email, password, img_url, phone, address });
+        // Determine if this is the first user being registered
+        const isFirstUser = (await User.countDocuments({})) === 0;
+
+        // Set role based on whether it's the first user or not
+        const role = isFirstUser ? 'Superadmin' : 'User';
+
+        user = new User({ username, email, password, img_url, phone, address, role });
 
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
